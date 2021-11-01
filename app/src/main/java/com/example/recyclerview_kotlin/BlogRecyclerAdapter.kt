@@ -1,5 +1,6 @@
 package com.example.recyclerview_kotlin
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,15 +15,25 @@ class BlogRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private var items: List<BlogPost> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        TODO("Not yet implemented")
+        return BlogViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.layout_blog_list_item, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        when(holder){
+           is BlogViewHolder ->{
+               holder.bind(items.get(position))
+           }
+        }
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    fun submitList(blogList: List<BlogPost>){
+        items = blogList
     }
 
 class BlogViewHolder constructor(
@@ -41,6 +52,7 @@ class BlogViewHolder constructor(
             .error(R.drawable.ic_launcher_background)
 
         Glide.with(itemView.context)
+            .applyDefaultRequestOptions(requestOptions)
             .load(blogPost.image)
             .into(blogImage)
     }
